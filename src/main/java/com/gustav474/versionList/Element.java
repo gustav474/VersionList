@@ -1,18 +1,24 @@
 package com.gustav474.versionList;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Element {
 
-    private Calendar time;
+    private LocalDateTime time;
     private ArrayList list;
 
     public Element(ArrayList list) {
-        this.time = new GregorianCalendar();
+        this.time = LocalDateTime.now();
         this.list = list;
     }
 
-    public Element(GregorianCalendar time, ArrayList list) {
+    /**
+     * Use this method for tests
+     * @param time
+     * @param list
+     */
+    public Element(LocalDateTime time, ArrayList list) {
         this.time = time;
         this.list = list;
     }
@@ -21,12 +27,13 @@ public class Element {
         return this.list;
     }
 
-    public String getTime() {
-        return time.get(Calendar.HOUR_OF_DAY) + "-" + this.time.get(Calendar.MINUTE);
+    public LocalDateTime getDateTime() {
+        return this.time;
     }
+
 
     @Override
     public String toString() {
-        return getTime() + " " + this.list;
+        return getDateTime() + " " + this.list;
     }
 }

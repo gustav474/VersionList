@@ -1,5 +1,6 @@
 package com.gustav474.versionList;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class VersionList implements java.util.List{
@@ -29,8 +30,39 @@ public class VersionList implements java.util.List{
     }
 
     @Override
-    public Iterator iterator() {
-        return null;
+    public Iterator<Element> iterator() {
+        return new Itr();
+    }
+
+    private class Itr implements Iterator<Element> {
+        int cursor;       // index of next element to return
+        int lastRet = -1; // index of last element returned; -1 if no such
+
+        Itr () {}
+
+        @Override
+        public boolean hasNext() {
+//            return cursor != size;
+            return cursor < size;
+        }
+
+        @Override
+        public Element next() {
+            Element nextElement = elementData[cursor];
+            cursor++;
+            lastRet++;
+            return nextElement;
+        }
+
+        @Override
+        public void remove() {
+            VersionList.this.remove(lastRet);
+        }
+
+//        @Override
+//        public void forEachRemaining(Consumer<? super E> action) {
+//
+//        }
     }
 
     @Override
@@ -118,16 +150,16 @@ public class VersionList implements java.util.List{
      * @param time
      * @return List from begin to index if we find state by time in List, empty ArrayList if not
      */
-    public ArrayList getList(String time) {
+    public ArrayList getList(LocalDateTime time) {
         result_list.clear();
 
         for (int i = 0; i <= elementData.length-1; i++) {
-            if (elementData[i].getTime().equals(time)) {
-                return getList(i);
+            if (elementData[i].getDateTime().compareTo(time) > 0) {
+                return getList(i-1);
             }
         }
 
-        System.out.println("Something went wrong, check time and try again");
+        System.out.println("Something went wrong, check requested time and try again");
 
         return new ArrayList();
     }
@@ -144,7 +176,9 @@ public class VersionList implements java.util.List{
 
     @Override
     public Element remove(int index) {
-        return null;
+        Element deletedElement = elementData[index];
+        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
+        return deletedElement;
     }
 
     @Override

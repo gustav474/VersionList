@@ -150,6 +150,7 @@ public class VersionList implements java.util.List{
      * @param time
      * @return List from begin to index if we find state by time in List, empty ArrayList if not
      */
+    //TODO разобраться с исключением
     public ArrayList getList(LocalDateTime time) throws ArrayIndexOutOfBoundsException{
         result_list.clear();
         for (int i = 0; i <= elementData.length-1; i++) {

@@ -31,7 +31,6 @@ public class Element {
         return this.time;
     }
 
-
     @Override
     public String toString() {
         return getDateTime() + " " + this.list;

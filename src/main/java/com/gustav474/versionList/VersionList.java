@@ -146,22 +146,18 @@ public class VersionList implements java.util.List{
     }
 
     /**
-     * Get the state of a list of items by string time in "HH-m" format
+     * Get the state of a list by time
      * @param time
      * @return List from begin to index if we find state by time in List, empty ArrayList if not
      */
-    public ArrayList getList(LocalDateTime time) {
+    public ArrayList getList(LocalDateTime time) throws ArrayIndexOutOfBoundsException{
         result_list.clear();
-
         for (int i = 0; i <= elementData.length-1; i++) {
-            if (elementData[i].getDateTime().compareTo(time) > 0) {
-                return getList(i-1);
-            }
+            if (elementData[i].getDateTime().compareTo(time) == 0) return getList(i);
+            if (elementData[i].getDateTime().compareTo(time) > 0) return getList(i - 1);
         }
 
-        System.out.println("Something went wrong, check requested time and try again");
-
-        return new ArrayList();
+        throw new ArrayIndexOutOfBoundsException();
     }
 
     @Override

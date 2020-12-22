@@ -14,18 +14,6 @@ public class VersionListTest {
     @Test
     public void getListShouldReturnSublistByTime() {
 
-//        GregorianCalendar time1 = new GregorianCalendar();
-//        time1.set(Calendar.HOUR_OF_DAY, 12);
-//        time1.set(Calendar.MINUTE, 00);
-//
-//        GregorianCalendar time2 = new GregorianCalendar();
-//        time2.set(Calendar.HOUR_OF_DAY, 12);
-//        time2.set(Calendar.MINUTE, 01);
-//
-//        GregorianCalendar time3 = new GregorianCalendar();
-//        time3.set(Calendar.HOUR_OF_DAY, 12);
-//        time3.set(Calendar.MINUTE, 03);
-
         LocalDateTime time1 = LocalDateTime.of(LocalDate.of(2020, 12, 25),
                 LocalTime.of(12, 00, 00));
 
@@ -62,10 +50,19 @@ public class VersionListTest {
         expected.add(testList1);
         expected.add(testList2);
 
-        LocalDateTime timeForCompare = LocalDateTime.of(LocalDate.of(2020, 12, 25),
+        LocalDateTime timeInExistingRange = LocalDateTime.of(LocalDate.of(2020, 12, 25),
                 LocalTime.of(12, 02, 00));
 
-        Assert.assertEquals(expected, actual.getList(timeForCompare));
+        LocalDateTime timeOutOfExistingRange = LocalDateTime.of(LocalDate.of(2020, 12, 24),
+                LocalTime.of(12, 02, 00));
+
+
+//        Time for comparing in existing range
+        Assert.assertEquals(expected, actual.getList(timeInExistingRange));
+//        Time for comparing is out of existing range
+        Assert.assertEquals(new ArrayList(), actual.getList(timeOutOfExistingRange));
+//        Times are equals
+        Assert.assertEquals(expected, actual.getList(time2));
     }
 
 //    @Test

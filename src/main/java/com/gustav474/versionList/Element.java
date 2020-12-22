@@ -3,14 +3,19 @@ package com.gustav474.versionList;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class Element {
+public class Element<T> {
 
     private LocalDateTime time;
-    private ArrayList list;
+    private ArrayList<T> listOfElements;
 
-    public Element(ArrayList list) {
+    public Element(ArrayList<T> list) {
         this.time = LocalDateTime.now();
-        this.list = list;
+        this.listOfElements = list;
+    }
+
+    public Element(T e) {
+        this.time = LocalDateTime.now();
+        this.listOfElements.add(e);
     }
 
     /**
@@ -20,11 +25,11 @@ public class Element {
      */
     public Element(LocalDateTime time, ArrayList list) {
         this.time = time;
-        this.list = list;
+        this.listOfElements = list;
     }
 
-    public ArrayList getList() {
-        return this.list;
+    public ArrayList<T> getList() {
+        return this.listOfElements;
     }
 
     public LocalDateTime getDateTime() {
@@ -33,6 +38,6 @@ public class Element {
 
     @Override
     public String toString() {
-        return getDateTime() + " " + this.list;
+        return getDateTime() + " " + this.listOfElements;
     }
 }

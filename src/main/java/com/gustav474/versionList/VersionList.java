@@ -3,7 +3,7 @@ package com.gustav474.versionList;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class VersionList implements java.util.List{
+public class VersionList<T> implements java.util.List<T>{
 
     private final int DEFAULT_LENGTH = 2;
 
@@ -30,11 +30,11 @@ public class VersionList implements java.util.List{
     }
 
     @Override
-    public Iterator<Element> iterator() {
+    public Iterator<T> iterator() {
         return new Itr();
     }
 
-    private class Itr implements Iterator<Element> {
+    private class Itr implements Iterator<T> {
         int cursor;       // index of next element to return
         int lastRet = -1; // index of last element returned; -1 if no such
 
@@ -47,11 +47,11 @@ public class VersionList implements java.util.List{
         }
 
         @Override
-        public Element next() {
+        public T next() {
             Element nextElement = elementData[cursor];
             cursor++;
             lastRet++;
-            return nextElement;
+            return (T) nextElement.getList();
         }
 
         @Override
@@ -59,10 +59,6 @@ public class VersionList implements java.util.List{
             VersionList.this.remove(lastRet);
         }
 
-//        @Override
-//        public void forEachRemaining(Consumer<? super E> action) {
-//
-//        }
     }
 
     @Override
@@ -70,8 +66,9 @@ public class VersionList implements java.util.List{
         return elementData;
     }
 
+    //TODO изменить добавление объекта в лист. Избавиться от явного Element. Передавать можно либо один объект, либо список объектов
     @Override
-    public boolean add(Object o) {
+    public boolean add(T o) {
         if (elementData.length == size) grow();
         if (o instanceof Element) {
             elementData[size++] = (Element) o;
@@ -81,6 +78,11 @@ public class VersionList implements java.util.List{
         elementData[size++] = new Element((ArrayList) o);
         return true;
     }
+
+//    @Override
+//    public boolean add(List<T> list) {
+//        return false;
+//    }
 
     /**
      * Increase the length of the array if there is not enough space to store the element
@@ -119,8 +121,8 @@ public class VersionList implements java.util.List{
     }
 
     @Override
-    public Element get(int index) {
-        return elementData[index];
+    public T get(int index) {
+        return (T) elementData[index].getList();
     }
 
 
@@ -173,10 +175,10 @@ public class VersionList implements java.util.List{
     }
 
     @Override
-    public Element remove(int index) {
+    public T remove(int index) {
         Element deletedElement = elementData[index];
         System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
-        return deletedElement;
+        return (T) deletedElement.getList();
     }
 
     @Override

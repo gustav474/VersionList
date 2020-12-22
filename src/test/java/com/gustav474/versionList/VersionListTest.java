@@ -1,10 +1,8 @@
 package com.gustav474.versionList;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.time.*;
 import java.util.ArrayList;
 
@@ -92,8 +90,8 @@ public class VersionListTest {
 
     @Test
     public void IteratorShouldReturnElementOfCollection () {
-        Assert.assertEquals(element1, actual.iterator().next());
+        Assert.assertEquals(testList1, actual.iterator().next());
         Assert.assertEquals(true, actual.iterator().hasNext());
-        Assert.assertEquals(element3, actual.remove(2));
+        Assert.assertEquals(testList3, actual.remove(2));
     }
 }

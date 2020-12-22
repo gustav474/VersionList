@@ -28,6 +28,7 @@ public class VersionListTest {
 
     @Before
     public void setUp() {
+
         time1 = LocalDateTime.of(LocalDate.of(2020, 12, 25),
                 LocalTime.of(12, 00, 00));
 
@@ -40,8 +41,8 @@ public class VersionListTest {
         timeInExistingRange = LocalDateTime.of(LocalDate.of(2020, 12, 25),
                 LocalTime.of(12, 02, 00));
 
-        timeOutOfExistingRange = LocalDateTime.of(LocalDate.of(2020, 12, 24),
-                LocalTime.of(12, 02, 00));
+        timeOutOfExistingRange = LocalDateTime.of(LocalDate.of(2020, 12, 25),
+                LocalTime.of(11, 02, 00));
 
         testList1 = new ArrayList();
         testList1.add(1);
@@ -74,10 +75,14 @@ public class VersionListTest {
     public void getListShouldReturnSublistByTime() {
 //        Time for comparing in existing range
         Assert.assertEquals(expected, actual.getList(timeInExistingRange));
-//        Time for comparing is out of existing range
-        Assert.assertEquals(new ArrayList(), actual.getList(timeOutOfExistingRange));
 //        Times are equals
         Assert.assertEquals(expected, actual.getList(time2));
+    }
+
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void getListShouldReturnIndexOutOfBoundsException() {
+//        Time for comparing is out of existing range
+        Assert.assertEquals(new ArrayList(), actual.getList(timeOutOfExistingRange));
     }
 
     @Test

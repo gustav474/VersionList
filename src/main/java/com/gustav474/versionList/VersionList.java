@@ -153,12 +153,13 @@ public class VersionList implements java.util.List{
     //TODO разобраться с исключением
     public ArrayList getList(LocalDateTime time) throws ArrayIndexOutOfBoundsException{
         result_list.clear();
-        for (int i = 0; i <= elementData.length-1; i++) {
-            if (elementData[i].getDateTime().compareTo(time) == 0) return getList(i);
-            if (elementData[i].getDateTime().compareTo(time) > 0) return getList(i - 1);
-        }
+        if (elementData[0].getDateTime().isAfter(time)) throw new ArrayIndexOutOfBoundsException();
 
-        throw new ArrayIndexOutOfBoundsException();
+        for (int i = 0; i <= elementData.length-1; i++) {
+            if (elementData[i].getDateTime().isEqual(time)) return getList(i);
+            if (elementData[i].getDateTime().isAfter(time)) return getList(i - 1);
+        }
+         return new ArrayList();
     }
 
     @Override

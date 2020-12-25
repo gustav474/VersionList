@@ -51,7 +51,7 @@ public class VersionList<T> implements java.util.List<T>{
             Element nextElement = elementData[cursor];
             cursor++;
             lastRet++;
-            return (T) nextElement.getList();
+            return (T) nextElement.getElement();
         }
 
         @Override
@@ -67,6 +67,7 @@ public class VersionList<T> implements java.util.List<T>{
     }
 
     //TODO изменить добавление объекта в лист. Избавиться от явного Element. Передавать можно либо один объект, либо список объектов
+    //TODO сделать тест на добавление одного объекта и листа объектов
     @Override
     public boolean add(T o) {
         if (elementData.length == size) grow();
@@ -75,14 +76,9 @@ public class VersionList<T> implements java.util.List<T>{
             return true;
         }
 
-        elementData[size++] = new Element((ArrayList) o);
+        elementData[size++] = new Element(o);
         return true;
     }
-
-//    @Override
-//    public boolean add(List<T> list) {
-//        return false;
-//    }
 
     /**
      * Increase the length of the array if there is not enough space to store the element
@@ -122,7 +118,7 @@ public class VersionList<T> implements java.util.List<T>{
 
     @Override
     public T get(int index) {
-        return (T) elementData[index].getList();
+        return (T) elementData[index].getElement();
     }
 
 
@@ -137,7 +133,7 @@ public class VersionList<T> implements java.util.List<T>{
 
         while (index >= 0) {
             Element res = elementData[index];
-            result_list.add(res.getList());
+            result_list.add(res.getElement());
 //            System.out.println(res);
             get(index);
             index--;
@@ -178,7 +174,7 @@ public class VersionList<T> implements java.util.List<T>{
     public T remove(int index) {
         Element deletedElement = elementData[index];
         System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
-        return (T) deletedElement.getList();
+        return (T) deletedElement.getElement();
     }
 
     @Override

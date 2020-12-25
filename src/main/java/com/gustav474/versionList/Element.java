@@ -6,7 +6,7 @@ import java.util.*;
 public class Element<T> {
 
     private LocalDateTime time;
-    private ArrayList<T> listOfElements;
+    private ArrayList<T> listOfElements = new ArrayList<>();
 
     public Element(ArrayList<T> list) {
         this.time = LocalDateTime.now();
@@ -28,8 +28,9 @@ public class Element<T> {
         this.listOfElements = list;
     }
 
-    public ArrayList<T> getList() {
-        return this.listOfElements;
+    public T getElement() {
+        if (listOfElements.size() == 1) return listOfElements.get(0);
+        else return (T) this.listOfElements;
     }
 
     public LocalDateTime getDateTime() {

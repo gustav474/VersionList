@@ -3,8 +3,12 @@ package com.gustav474.versionList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.lang.reflect.Array;
 import java.time.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class VersionListTest {
@@ -20,7 +24,9 @@ public class VersionListTest {
     private Element element1;
     private Element element2;
     private Element element3;
+    private Element element4;
     private VersionList actual;
+    private VersionList actual2;
     private ArrayList expected;
 
 
@@ -58,11 +64,15 @@ public class VersionListTest {
         element1 = new Element(time1, testList1);
         element2 = new Element(time2, testList2);
         element3 = new Element(time3, testList3);
+//        element4= new Element(testList1);
 
         actual = new VersionList();
         actual.add(element1);
         actual.add(element2);
         actual.add(element3);
+
+//        actual2 = new VersionList();
+//        actual2.add(element4);
 
         expected = new ArrayList();
         expected.add(testList1);
@@ -93,5 +103,27 @@ public class VersionListTest {
         Assert.assertEquals(testList1, actual.iterator().next());
         Assert.assertEquals(true, actual.iterator().hasNext());
         Assert.assertEquals(testList3, actual.remove(2));
+    }
+
+    //TODO переименовать метод
+    @Test
+    public void VersionListShouldTakeOneElement () {
+        VersionList<Integer> actual2 = new VersionList();
+        Integer num = new Integer(5);
+
+        actual2.add(num);
+
+        Assert.assertEquals(num, actual2.get(0));
+    }
+
+    @Test
+    public void VersionListShouldTakeListOfElements () {
+        VersionList actual3 = new VersionList();
+
+        List list = Arrays.asList(5, 6, 7);
+
+        actual3.add(list);
+
+        Assert.assertEquals(list, actual3.get(0));
     }
 }

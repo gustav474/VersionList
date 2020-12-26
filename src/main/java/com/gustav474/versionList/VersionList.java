@@ -75,7 +75,6 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
 
     }
 
-//    TODO  добавить перебор в цикле и возвращать T[]
     @Override
     public Object[] toArray() {
         ArrayList list = new ArrayList();
@@ -103,6 +102,18 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
     private void grow() {
         int newLength =  elementData.length + (elementData.length >> 1);
         elementData = Arrays.copyOf(elementData, newLength);
+    }
+
+    private void grow(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if (newCapacity - minCapacity < 0)
+            newCapacity = minCapacity;
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacity(minCapacity);
+        // minCapacity is usually close to size, so this is a win:
+        elementData = Arrays.copyOf(elementData, newCapacity);
     }
 
     @Override
@@ -143,23 +154,8 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
     }
 
     private void ensureExplicitCapacity(int minCapacity) {
-//        modCount++;
-
-        // overflow-conscious code
         if (minCapacity - elementData.length > 0)
             this.grow(minCapacity);
-    }
-
-    private void grow(int minCapacity) {
-        // overflow-conscious code
-        int oldCapacity = elementData.length;
-        int newCapacity = oldCapacity + (oldCapacity >> 1);
-        if (newCapacity - minCapacity < 0)
-            newCapacity = minCapacity;
-        if (newCapacity - MAX_ARRAY_SIZE > 0)
-            newCapacity = hugeCapacity(minCapacity);
-        // minCapacity is usually close to size, so this is a win:
-        elementData = Arrays.copyOf(elementData, newCapacity);
     }
 
     private static int hugeCapacity(int minCapacity) {
@@ -201,23 +197,6 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
 
         size++;
         return oldLength != newLength;
-
-
-
-
-
-//        Object[] a = c.toArray();
-//        int numNew = a.length;
-////        ensureCapacityInternal(size + numNew);  // Increments modCount
-//
-//        int numMoved = size - index;
-//        if (numMoved > 0)
-//            System.arraycopy(elementData, index, elementData, index + numNew,
-//                    numMoved);
-//
-//        System.arraycopy(a, 0, elementData, index, numNew);
-//        size += numNew;
-//        return numNew != 0;
     }
 
     private void rangeCheckForAdd(int index) {

@@ -170,7 +170,7 @@ public class VersionListTest {
     }
 
     @Test
-    public void VersionListShouldMakeAddAllMethods () {
+    public void VersionListShouldMakeAddAllAndGetMethods () {
         VersionList<Integer> actual3 = new VersionList();
         ArrayList list = new ArrayList();
         list.add(testList1);
@@ -180,6 +180,18 @@ public class VersionListTest {
         Assert.assertEquals(1, actual3.size());
         Assert.assertEquals(true, actual3.addAll(0, testList2));
         Assert.assertEquals(2, actual3.size());
+        Assert.assertEquals(testList2, actual3.get(0));
     }
 
+    @Test
+    public void VersionListShouldMakeClearMethod () {
+        VersionList<String> actual3 = new VersionList();
+
+        actual3.add(new String("Hello"));
+        actual3.add(new String ("word"));
+
+        Assert.assertEquals(2, actual3.size());
+        actual3.clear();
+        Assert.assertEquals(0, actual3.size());
+    }
 }

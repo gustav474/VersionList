@@ -23,7 +23,7 @@ public class Element<T> {
      * @param time
      * @param list
      */
-    public Element(LocalDateTime time, ArrayList list) {
+    public Element(LocalDateTime time, ArrayList<T> list) {
         this.time = time;
         this.listOfElements = list;
     }

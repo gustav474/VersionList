@@ -3,8 +3,6 @@ package com.gustav474.versionList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.lang.reflect.Array;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +59,7 @@ public class VersionListTest {
         testList3.add(100);
         testList3.add(200);
 
+
         element1 = new Element(time1, testList1);
         element2 = new Element(time2, testList2);
         element3 = new Element(time3, testList3);
@@ -105,7 +104,6 @@ public class VersionListTest {
         Assert.assertEquals(testList3, actual.remove(2));
     }
 
-    //TODO переименовать метод
     @Test
     public void VersionListShouldTakeOneElement () {
         VersionList<Integer> actual2 = new VersionList();
@@ -125,5 +123,25 @@ public class VersionListTest {
         actual3.add(list);
 
         Assert.assertEquals(list, actual3.get(0));
+    }
+
+    @Test
+    public void VersionListShouldMakeToArrayMethod () {
+        VersionList actual3 = new VersionList();
+
+        List<Integer> list = Arrays.asList(5, 6, 7);
+        Integer num = new Integer(10);
+
+        actual3.add(list);
+        actual3.add(num);
+
+        Object[] array = new Object[2];
+        array[0] = list;
+        array[1] = num;
+
+        Integer[] array2 = new Integer[1];
+
+        Assert.assertEquals(array, actual3.toArray());
+        Assert.assertEquals(array2, actual3.toArray(array2));
     }
 }

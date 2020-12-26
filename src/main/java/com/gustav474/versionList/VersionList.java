@@ -1,12 +1,17 @@
 package com.gustav474.versionList;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
 
     private final int DEFAULT_LENGTH = 2;
+
+    private static final int DEFAULT_CAPACITY = 10;
+
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
+    private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
 
     private Element[] elementData = new Element[DEFAULT_LENGTH];
 
@@ -29,10 +34,10 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
     public boolean contains(Object o) {
         if (o == null) {
             for (int i = 0; i < size; i++)
-                if (elementData[i] == null) return true;
+                if (elementData[i].getElement() == null) return true;
         } else {
             for (int i = 0; i < size; i++) {
-                if (o.equals(elementData[i])) return true;
+                if (o.equals(elementData[i].getElement())) return true;
             }
         }
         return false;
@@ -104,13 +109,13 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
     public boolean remove(Object o) {
         if (o == null) {
             for (int index = 0; index < size; index++)
-                if (elementData[index] == null) {
+                if (elementData[index].getElement() == null) {
                     fastRemove(index);
                     return true;
                 }
         } else {
             for (int index = 0; index < size; index++)
-                if (o.equals(elementData[index])) {
+                if (o.equals(elementData[index].getElement())) {
                     fastRemove(index);
                     return true;
                 }
@@ -126,30 +131,93 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
         elementData[--size] = null; // clear to let GC do its work
     }
 
+    private void ensureCapacityInternal(int minCapacity) {
+        ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+    }
+
+    private static int calculateCapacity(Object[] elementData, int minCapacity) {
+        if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+            return Math.max(DEFAULT_CAPACITY, minCapacity);
+        }
+        return minCapacity;
+    }
+
+    private void ensureExplicitCapacity(int minCapacity) {
+//        modCount++;
+
+        // overflow-conscious code
+        if (minCapacity - elementData.length > 0)
+            this.grow(minCapacity);
+    }
+
+    private void grow(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+        if (newCapacity - minCapacity < 0)
+            newCapacity = minCapacity;
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacity(minCapacity);
+        // minCapacity is usually close to size, so this is a win:
+        elementData = Arrays.copyOf(elementData, newCapacity);
+    }
+
+    private static int hugeCapacity(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE) ?
+                Integer.MAX_VALUE :
+                MAX_ARRAY_SIZE;
+    }
+
+    /**
+     * Add collection as ONE Element instance with One timestampt
+     * @param c
+     * @return True if add successfully, False if not
+     */
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        Object[] a = c.toArray();
-        int numNew = a.length;
-        System.arraycopy(a, 0, elementData, size, numNew);
-        size += numNew;
-        return numNew != 0;
+        Element element = new Element(c);
+        int oldLength = elementData.length;
+        ensureCapacityInternal(size + 1);  // Increments modCount
+        elementData = Arrays.copyOf(elementData, elementData.length + 1);
+        int newLength = elementData.length;
+        elementData[elementData.length-1] = element;
+        size++;
+        return oldLength != newLength;
     }
 
     @Override
-    public boolean addAll(int index, Collection c) {
+    public boolean addAll(int index, Collection<? extends T> c) {
         rangeCheckForAdd(index);
+        int oldLength = elementData.length;
+        ensureCapacityInternal(size + 1);  // Increments modCount
 
-        Object[] a = c.toArray();
-        int numNew = a.length;
+        elementData = Arrays.copyOf(elementData, elementData.length + 1);
+        System.arraycopy(elementData, index, elementData, index + 1,
+                size - index);
+        int newLength = elementData.length;
+        elementData[index] = new Element(c);
 
-        int numMoved = size - index;
-        if (numMoved > 0)
-            System.arraycopy(elementData, index, elementData, index + numNew,
-                    numMoved);
+        size++;
+        return oldLength != newLength;
 
-        System.arraycopy(a, 0, elementData, index, numNew);
-        size += numNew;
-        return numNew != 0;
+
+
+
+
+//        Object[] a = c.toArray();
+//        int numNew = a.length;
+////        ensureCapacityInternal(size + numNew);  // Increments modCount
+//
+//        int numMoved = size - index;
+//        if (numMoved > 0)
+//            System.arraycopy(elementData, index, elementData, index + numNew,
+//                    numMoved);
+//
+//        System.arraycopy(a, 0, elementData, index, numNew);
+//        size += numNew;
+//        return numNew != 0;
     }
 
     private void rangeCheckForAdd(int index) {

@@ -144,4 +144,42 @@ public class VersionListTest {
         Assert.assertEquals(array, actual3.toArray());
         Assert.assertEquals(array2, actual3.toArray(array2));
     }
+
+    @Test
+    public void VersionListShouldMakeContainsMethod () {
+        VersionList<String> actual3 = new VersionList();
+
+        String str = new String("HellO!");
+
+        actual3.add(str);
+
+        Assert.assertEquals(true, actual3.contains(str));
+    }
+
+    @Test
+    public void VersionListShouldMakeRemoveMethod () {
+        VersionList<String> actual3 = new VersionList();
+
+        String str = new String("HellO!");
+
+        actual3.add(str);
+
+        Assert.assertEquals(1, actual3.size());
+        Assert.assertEquals(true, actual3.remove(str));
+        Assert.assertEquals(0, actual3.size());
+    }
+
+    @Test
+    public void VersionListShouldMakeAddAllMethods () {
+        VersionList<Integer> actual3 = new VersionList();
+        ArrayList list = new ArrayList();
+        list.add(testList1);
+        list.add(testList2);
+
+        Assert.assertEquals(true, actual3.addAll(testList1));
+        Assert.assertEquals(1, actual3.size());
+        Assert.assertEquals(true, actual3.addAll(0, testList2));
+        Assert.assertEquals(2, actual3.size());
+    }
+
 }

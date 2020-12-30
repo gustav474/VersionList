@@ -1,9 +1,7 @@
 package com.gustav474.versionList;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
 
@@ -249,7 +247,6 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
      * @param time
      * @return List from begin to index if we find state by time in List, empty ArrayList if not
      */
-    //TODO разобраться с исключением
     public ArrayList getList(LocalDateTime time) throws ArrayIndexOutOfBoundsException{
         result_list.clear();
         if (elementData[0].getDateTime().isAfter(time)) throw new ArrayIndexOutOfBoundsException();

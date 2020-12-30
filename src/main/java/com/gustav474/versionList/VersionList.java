@@ -1,7 +1,9 @@
 package com.gustav474.versionList;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
 
@@ -222,20 +224,19 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
         return (T) elementData[index].getElement();
     }
 
-
     /**
      * Get the state of a list of items by int index
      *
      * @param index
      * @return List from begin to index
      */
-    public ArrayList getList(int index) {
+    public ArrayList<T> getList(int index) {
         result_list.clear();
 
         while (index >= 0) {
             Element res = elementData[index];
             result_list.add(res.getElement());
-            get(index);
+//            get(index);
             index--;
         }
 
@@ -300,7 +301,7 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
                     return i;
         } else {
             for (int i = 0; i < size; i++)
-                if (o.equals(elementData[i]))
+                if (o.equals(elementData[i].getElement()))
                     return i;
         }
         return -1;
@@ -314,7 +315,7 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
                     return i;
         } else {
             for (int i = size-1; i >= 0; i--)
-                if (o.equals(elementData[i]))
+                if (o.equals(elementData[i].getElement()))
                     return i;
         }
         return -1;
@@ -323,7 +324,8 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         subListRangeCheck(fromIndex, toIndex, size);
-        return this.subList(fromIndex, toIndex);
+        ArrayList<T> list = this.getList(size - 1);
+        return list.subList(fromIndex, toIndex);
     }
 
     static void subListRangeCheck(int fromIndex, int toIndex, int size) {
@@ -338,12 +340,43 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return super.retainAll(c);
+        Objects.requireNonNull(c);
+        return batchRemove(c, true);
+    }
+
+    private boolean batchRemove(Collection<?> c, boolean complement) {
+        final Element[] elementData = this.elementData;
+        int r = 0, w = 0;
+        boolean modified = false;
+        try {
+            for (; r < size; r++)
+                if (c.contains(elementData[r].getElement()) == complement)
+                    elementData[w++] = elementData[r];
+        } finally {
+            // Preserve behavioral compatibility with AbstractCollection,
+            // even if c.contains() throws.
+            if (r != size) {
+                System.arraycopy(elementData, r,
+                        elementData, w,
+                        size - r);
+                w += size - r;
+            }
+            if (w != size) {
+                // clear to let GC do its work
+                for (int i = w; i < size; i++)
+                    elementData[i]= null;
+                modCount += size - w;
+                size = w;
+                modified = true;
+            }
+        }
+        return modified;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return super.removeAll(c);
+        Objects.requireNonNull(c);
+        return batchRemove(c, false);
     }
 
     @Override

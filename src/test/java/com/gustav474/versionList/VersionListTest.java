@@ -59,19 +59,14 @@ public class VersionListTest {
         testList3.add(100);
         testList3.add(200);
 
-
         element1 = new Element(time1, testList1);
         element2 = new Element(time2, testList2);
         element3 = new Element(time3, testList3);
-//        element4= new Element(testList1);
 
         actual = new VersionList();
         actual.add(element1);
         actual.add(element2);
         actual.add(element3);
-
-//        actual2 = new VersionList();
-//        actual2.add(element4);
 
         expected = new ArrayList();
         expected.add(testList1);
@@ -106,34 +101,34 @@ public class VersionListTest {
 
     @Test
     public void VersionListShouldTakeOneElement () {
-        VersionList<Integer> actual2 = new VersionList();
+        VersionList<Integer> actual = new VersionList();
         Integer num = new Integer(5);
 
-        actual2.add(num);
+        actual.add(num);
 
-        Assert.assertEquals(num, actual2.get(0));
+        Assert.assertEquals(num, actual.get(0));
     }
 
     @Test
     public void VersionListShouldTakeListOfElements () {
-        VersionList actual3 = new VersionList();
+        VersionList actual = new VersionList();
 
         List list = Arrays.asList(5, 6, 7);
 
-        actual3.add(list);
+        actual.add(list);
 
-        Assert.assertEquals(list, actual3.get(0));
+        Assert.assertEquals(list, actual.get(0));
     }
 
     @Test
     public void VersionListShouldMakeToArrayMethod () {
-        VersionList actual3 = new VersionList();
+        VersionList actual = new VersionList();
 
         List<Integer> list = Arrays.asList(5, 6, 7);
         Integer num = new Integer(10);
 
-        actual3.add(list);
-        actual3.add(num);
+        actual.add(list);
+        actual.add(num);
 
         Object[] array = new Object[2];
         array[0] = list;
@@ -141,57 +136,181 @@ public class VersionListTest {
 
         Integer[] array2 = new Integer[1];
 
-        Assert.assertEquals(array, actual3.toArray());
-        Assert.assertEquals(array2, actual3.toArray(array2));
+        Assert.assertEquals(array, actual.toArray());
+        Assert.assertEquals(array2, actual.toArray(array2));
     }
 
     @Test
     public void VersionListShouldMakeContainsMethod () {
-        VersionList<String> actual3 = new VersionList();
+        VersionList<String> actual = new VersionList();
 
         String str = new String("HellO!");
 
-        actual3.add(str);
+        actual.add(str);
 
-        Assert.assertEquals(true, actual3.contains(str));
+        Assert.assertEquals(true, actual.contains(str));
     }
 
     @Test
     public void VersionListShouldMakeRemoveMethod () {
-        VersionList<String> actual3 = new VersionList();
+        VersionList<String> actual = new VersionList();
 
         String str = new String("HellO!");
+        String str2 = new String("HI");
 
-        actual3.add(str);
+        actual.add(str);
+        actual.add(str2);
 
-        Assert.assertEquals(1, actual3.size());
-        Assert.assertEquals(true, actual3.remove(str));
-        Assert.assertEquals(0, actual3.size());
+        Assert.assertEquals(2, actual.size());
+        Assert.assertEquals(true, actual.remove(str));
+        Assert.assertEquals(1, actual.size());
+        Assert.assertEquals(str2, actual.remove(0));
+
     }
 
     @Test
     public void VersionListShouldMakeAddAllAndGetMethods () {
-        VersionList<Integer> actual3 = new VersionList();
+        VersionList<Integer> actual = new VersionList();
         ArrayList list = new ArrayList();
         list.add(testList1);
         list.add(testList2);
 
-        Assert.assertEquals(true, actual3.addAll(testList1));
-        Assert.assertEquals(1, actual3.size());
-        Assert.assertEquals(true, actual3.addAll(0, testList2));
-        Assert.assertEquals(2, actual3.size());
-        Assert.assertEquals(testList2, actual3.get(0));
+        Assert.assertEquals(true, actual.addAll(testList1));
+        Assert.assertEquals(1, actual.size());
+        Assert.assertEquals(true, actual.addAll(0, testList2));
+        Assert.assertEquals(2, actual.size());
+        Assert.assertEquals(testList2, actual.get(0));
     }
 
     @Test
     public void VersionListShouldMakeClearMethod () {
-        VersionList<String> actual3 = new VersionList();
+        VersionList<String> actual = new VersionList();
 
-        actual3.add(new String("Hello"));
-        actual3.add(new String ("word"));
+        actual.add(new String("Hello"));
+        actual.add(new String ("word"));
 
-        Assert.assertEquals(2, actual3.size());
-        actual3.clear();
-        Assert.assertEquals(0, actual3.size());
+        Assert.assertEquals(2, actual.size());
+        actual.clear();
+        Assert.assertEquals(0, actual.size());
+    }
+
+    @Test
+    public void VersionListShouldMakeSetMethod () {
+        VersionList<String> actual = new VersionList();
+        actual.add(new String("Hi!"));
+
+        Assert.assertEquals(new String("Hi!"), actual.set(0, new String("Hello!")));
+        Assert.assertEquals(new String("Hello!"), actual.get(0));
+    }
+
+    @Test
+    public void VersionListShouldMakeIndexOfAndLastIndexOfMethods () {
+        VersionList<Integer> actual = new VersionList();
+
+        Integer num1 = new Integer(1);
+        Integer num2 = new Integer(2);
+        Integer num3 = new Integer(3);
+        Integer num4 = new Integer(4);
+
+        actual.add(num1);
+        actual.add(num2);
+        actual.add(num3);
+        actual.add(num4);
+
+        Assert.assertEquals(1, actual.indexOf(num2));
+        Assert.assertEquals(2, actual.lastIndexOf(num3));
+    }
+
+    @Test
+    public void VersionListShouldMakeSublistMethod () {
+        VersionList<Integer> actual = new VersionList();
+
+        Integer num1 = new Integer(1);
+        Integer num2 = new Integer(2);
+        Integer num3 = new Integer(3);
+        Integer num4 = new Integer(4);
+
+        actual.add(num1);
+        actual.add(num2);
+        actual.add(num3);
+        actual.add(num4);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(num2);
+        list.add(num3);
+
+        Assert.assertEquals(4, actual.size());
+        Assert.assertEquals(list, actual.subList(1, 3));
+        Assert.assertEquals(2, actual.subList(1, 3).size());
+
+    }
+
+    @Test
+    public void VersionListShouldMakeRetainAllMethod () {
+        VersionList<Integer> actual = new VersionList();
+
+        Integer num1 = new Integer(1);
+        Integer num2 = new Integer(2);
+        Integer num3 = new Integer(3);
+        Integer num4 = new Integer(4);
+
+        actual.add(num1);
+        actual.add(num2);
+        actual.add(num3);
+        actual.add(num4);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(num2);
+        list.add(num3);
+
+        Assert.assertEquals(true, actual.retainAll(list));
+        Assert.assertEquals(list, actual.getList(actual.size() - 1));
+    }
+
+    @Test
+    public void VersionListShouldMakeRemoveAllMethod () {
+        VersionList<Integer> actual = new VersionList();
+
+        Integer num1 = new Integer(1);
+        Integer num2 = new Integer(2);
+        Integer num3 = new Integer(3);
+        Integer num4 = new Integer(4);
+
+        actual.add(num1);
+        actual.add(num2);
+        actual.add(num3);
+        actual.add(num4);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(num2);
+        list.add(num3);
+
+        List<Integer> list2 = new ArrayList<>();
+        list2.add(num1);
+        list2.add(num4);
+
+        Assert.assertEquals(true, actual.removeAll(list));
+        Assert.assertEquals(list2, actual.getList(actual.size() - 1));
+    }
+
+    @Test
+    public void VersionListShouldMakeContainsAllMethod () {
+        VersionList<Integer> actual = new VersionList();
+
+        Integer num1 = new Integer(1);
+        Integer num2 = new Integer(2);
+        Integer num3 = new Integer(3);
+        Integer num4 = new Integer(4);
+
+        actual.add(num1);
+        actual.add(num2);
+        actual.add(num3);
+        actual.add(num4);
+
+        List<Integer> list = new ArrayList<>();
+        list.add(num2);
+        list.add(num3);
+
+        Assert.assertEquals(true, actual.containsAll(list));
     }
 }

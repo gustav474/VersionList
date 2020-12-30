@@ -17,7 +17,7 @@ public class VersionList<T> extends ArrayList<T> implements java.util.List<T>{
 
     private int size;
 
-    private ArrayList result_list = new ArrayList();
+    private ArrayList<T> result_list = new ArrayList();
 
 
     @Override
